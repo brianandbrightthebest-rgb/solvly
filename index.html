@@ -16,10 +16,10 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
+    <div class="wrap">
+      <div class="hero-inner">
         <h1>Smart Solutions for <em>Everyday Problems</em></h1>
-        <p>Practical products that simplify your home, workspace, travel, and daily routine. No gimmicks — just things that work.</p>
+        <p>Take a breath — you're in the right place. From tangled cables to crowded closets, every product here quietly fixes one daily frustration, so your home feels a little calmer every day.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="shop.html?f=best">Shop Best Sellers</a>
           <a class="btn btn-ghost" href="#solutions">Browse Solutions</a>
@@ -28,19 +28,6 @@
           <span>⭐ 4.8 average rating</span>
           <span>🚚 Free shipping over $50</span>
           <span>↩️ 30-day returns</span>
-        </div>
-      </div>
-      <div class="ps-visual" aria-hidden="true">
-        <div class="ps-card messy">
-          <div class="face">😩</div>
-          <div class="items">🔌🧦🔑📄☕</div>
-          <div class="label">The Problem</div>
-        </div>
-        <div class="ps-arrow">→</div>
-        <div class="ps-card solved">
-          <div class="face">😌</div>
-          <div class="items">✨🗂️✨</div>
-          <div class="label">Solved</div>
         </div>
       </div>
     </div>
@@ -130,6 +117,22 @@
     </div>
   </section>
 
+  <!-- OUR PROMISE -->
+  <section class="promise">
+    <div class="wrap">
+      <div class="promise-card">
+        <span class="kicker">Our Promise</span>
+        <h2>You're in good hands</h2>
+        <p>Shopping somewhere new can feel like a gamble. Here's why it isn't one.</p>
+        <ul class="promise-list">
+          <li><span class="pi">🔒</span><div><b>You approve before you pay</b><p>Place your order, review it by email, and only pay when you're ready. No surprise charges — ever.</p></div></li>
+          <li><span class="pi">↩️</span><div><b>30-day money-back promise</b><p>If a product doesn't genuinely make your day easier, send it back. Full refund, no forms, no fine print.</p></div></li>
+          <li><span class="pi">💬</span><div><b>A real person answers</b><p>Questions before or after you order? We reply within one business day, every time.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- SOLVLY FINDS -->
   <section class="section tinted">
     <div class="wrap">
@@ -176,9 +179,11 @@
       // categories
       $("#cat-grid").innerHTML = SOLVLY_CATEGORIES.map((c) => `
         <a class="cat-card" href="shop.html?cat=${c.id}">
-          <div class="icon">${c.icon}</div>
-          <h3>${c.name}</h3>
-          <p>${c.blurb}</p>
+          <img class="cat-photo" src="${c.img}" alt="${c.name}" loading="lazy" />
+          <div class="cat-body">
+            <span class="icon">${c.icon}</span><h3>${c.name}</h3>
+            <p>${c.blurb}</p>
+          </div>
         </a>`).join("");
 
       // best sellers (top 4 by tag)

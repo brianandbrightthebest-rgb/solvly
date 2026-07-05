@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Received — Solvly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section class="section">
+    <div class="wrap center" style="max-width:560px; padding-top:40px">
+      <div style="font-size:56px; margin-bottom:14px">🎉</div>
+      <h1 style="font-size:clamp(28px,4vw,40px); margin-bottom:12px">Order received — you're all set</h1>
+      <p style="color:var(--ink-soft); margin-bottom:28px">
+        Thanks for choosing Solvly. Here's exactly what happens next:
+      </p>
+      <div style="text-align:left; display:grid; gap:12px; margin-bottom:32px">
+        <div style="background:var(--tint); border-radius:12px; padding:16px 18px">
+          <b>1. We confirm your order</b><br>
+          <span style="font-size:14px; color:var(--ink-soft)">Within one business day you'll get an email from us reviewing your items and total.</span>
+        </div>
+        <div style="background:var(--tint); border-radius:12px; padding:16px 18px">
+          <b>2. You approve & pay securely</b><br>
+          <span style="font-size:14px; color:var(--ink-soft)">The email includes a secure payment link. Nothing is charged until you use it, and you can cancel anytime before then.</span>
+        </div>
+        <div style="background:var(--tint); border-radius:12px; padding:16px 18px">
+          <b>3. It ships</b><br>
+          <span style="font-size:14px; color:var(--ink-soft)">Your order ships within 1–2 business days of approval, with tracking sent to your inbox.</span>
+        </div>
+      </div>
+      <a class="btn btn-primary" href="index.html">Back to Solvly</a>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // order placed — clear the cart
+    localStorage.removeItem("solvly-cart");
+    document.addEventListener("DOMContentLoaded", renderCart);
+  </script>
+</body>
+</html>

@@ -89,12 +89,9 @@
 
       $("#pdp").innerHTML = `
         <div class="pdp-gallery">
-          <div class="pdp-art" id="pdp-art">${p.emoji}</div>
-          <div class="pdp-thumbs">
-            <div class="t active">${p.emoji}</div>
-            <div class="t">📦</div>
-            <div class="t">✨</div>
-          </div>
+          ${p.img
+            ? `<img class="pdp-img" src="${p.img}" alt="${p.name}" />`
+            : `<div class="pdp-art">${p.emoji}</div>`}
         </div>
         <div class="pdp-info">
           <span class="kicker">${SOLVLY_CATEGORIES.find((c) => c.id === p.category).name}</span>
@@ -107,6 +104,7 @@
             <span class="pdp-save">Save ${save}%</span>
           </div>
           <button class="btn btn-primary btn-block" data-add="${p.slug}">Add to Cart — ${money(p.price)}</button>
+          ${p.payLink ? `<a class="btn btn-ghost btn-block" style="margin-top:10px" href="${p.payLink}">Buy Now — Secure Card Checkout</a>` : ""}
           <div class="trust-row">
             <span>🚚 Free shipping over $50</span><span>↩️ 30-day returns</span><span>🛡️ 12-month warranty</span>
           </div>
@@ -123,13 +121,6 @@
             <ul class="benefit-list">${p.benefits.map((b) => `<li>${b}</li>`).join("")}</ul>
           </div>
         </div>`;
-
-      // thumbs swap the main art (placeholder tiles until real photos are added)
-      $$(".pdp-thumbs .t").forEach((t) => t.addEventListener("click", () => {
-        $$(".pdp-thumbs .t").forEach((x) => x.classList.remove("active"));
-        t.classList.add("active");
-        $("#pdp-art").textContent = t.textContent;
-      }));
 
       // before/after tailored to product
       $("#ba-mess").textContent = "😩" + p.emoji + "❓";

@@ -14,7 +14,7 @@ function renderChrome() {
 
   $("#site-header").innerHTML = `
     <div class="announce">
-      <span>🚚 Free Shipping on Orders $50+</span><span>⭐ Trusted by Thousands</span><span>🔥 Trending Problem-Solving Products</span>
+      <span>🚚 Free Shipping on Orders $50+</span><span>↩️ 30-Day Easy Returns</span><span>🛡️ 12-Month Warranty on Everything</span>
     </div>
     <div class="site-header">
       <div class="wrap nav-inner">
@@ -62,7 +62,7 @@ function renderChrome() {
         </div>
         <div class="footer-bottom">
           <span>© ${new Date().getFullYear()} Solvly. Smart Solutions for Everyday Problems.</span>
-          <span>Made with care · 30-day returns · 12-month warranty</span>
+          <span>30-day returns · 12-month warranty · Photos via <a href="https://unsplash.com" rel="noopener" target="_blank" style="color:inherit;text-decoration:underline">Unsplash</a></span>
         </div>
       </div>
     </footer>
@@ -73,21 +73,12 @@ function renderChrome() {
       <div class="cart-items"></div>
       <div class="cart-foot">
         <div class="cart-subtotal"><span>Subtotal</span><span class="subtotal-val">$0.00</span></div>
-        <div class="cart-note">Free shipping unlocked at $50 · 30-day returns</div>
+        <div class="cart-note">Free shipping unlocked at $50 · 30-day returns · You approve before you pay</div>
         <button class="btn btn-primary btn-block checkout-btn">Checkout →</button>
       </div>
     </aside>
 
-    <div class="toast"></div>
-
-    <div class="modal-overlay">
-      <div class="modal">
-        <div class="icon">🔒</div>
-        <h3>Checkout Opening Soon</h3>
-        <p>We're putting the finishing touches on secure payment. Message us on the <a href="contact.html" style="color:var(--blue);font-weight:600">contact page</a> to place an order directly in the meantime.</p>
-        <button class="btn btn-primary modal-close">Got it</button>
-      </div>
-    </div>`;
+    <div class="toast"></div>`;
 
   // nav interactions
   $(".burger").addEventListener("click", () => $(".nav-links").classList.toggle("open"));
@@ -99,15 +90,7 @@ function renderChrome() {
   $(".cart-btn").addEventListener("click", openCart);
   $(".cart-close").addEventListener("click", closeCart);
   $(".cart-overlay").addEventListener("click", closeCart);
-  $(".checkout-btn").addEventListener("click", () => {
-    /* OWNER: to enable real payments, replace the modal below with a redirect
-       to a Stripe Payment Link, e.g. location.href = "https://buy.stripe.com/..." */
-    $(".modal-overlay").classList.add("show");
-  });
-  $(".modal-close").addEventListener("click", () => $(".modal-overlay").classList.remove("show"));
-  $(".modal-overlay").addEventListener("click", (e) => {
-    if (e.target === e.currentTarget) e.currentTarget.classList.remove("show");
-  });
+  $(".checkout-btn").addEventListener("click", () => { location.href = "checkout.html"; });
 
   // highlight active nav link
   const page = location.pathname.split("/").pop() || "index.html";
@@ -120,6 +103,12 @@ function renderChrome() {
 
   renderCart();
 }
+
+/* ---------- product art (photo with emoji fallback) ---------- */
+const productArt = (p, cls = "p-img") =>
+  p.img
+    ? `<img class="${cls}" src="${p.img}" alt="${p.name}" loading="lazy" />`
+    : `<div class="p-art">${p.emoji}</div>`;
 
 /* ---------- product cards ---------- */
 function productCard(p, { badge } = {}) {
@@ -135,7 +124,7 @@ function productCard(p, { badge } = {}) {
   <div class="prod-card">
     ${badgeHtml}
     <a href="product.html?p=${p.slug}">
-      <div class="p-art">${p.emoji}</div>
+      ${productArt(p)}
       <div class="p-body">
         <div class="p-headline">${p.headline}</div>
         <div class="p-name">${p.name}</div>
@@ -176,23 +165,36 @@ function changeQty(slug, delta) {
   setCart(cart);
 }
 
+function cartEntries() {
+  return Object.entries(getCart()).filter(([slug]) => byId(slug));
+}
+
+function cartSubtotal() {
+  return cartEntries().reduce((s, [slug, q]) => s + byId(slug).price * q, 0);
+}
+
 function renderCart() {
-  const cart = getCart();
-  const entries = Object.entries(cart).filter(([slug]) => byId(slug));
+  const entries = cartEntries();
   const count = entries.reduce((s, [, q]) => s + q, 0);
   const countEl = $(".cart-count");
-  countEl.textContent = count;
-  countEl.hidden = count === 0;
+  if (countEl) {
+    countEl.textContent = count;
+    countEl.hidden = count === 0;
+  }
 
   const box = $(".cart-items");
+  if (!box) return;
   if (!entries.length) {
     box.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div>Your cart is empty.<br>Every problem has a solution — go find yours.</div>`;
   } else {
     box.innerHTML = entries.map(([slug, q]) => {
       const p = byId(slug);
+      const thumb = p.img
+        ? `<img class="thumb" src="${p.img}" alt="${p.name}" />`
+        : `<div class="thumb">${p.emoji}</div>`;
       return `
       <div class="cart-item">
-        <a href="product.html?p=${p.slug}"><div class="thumb">${p.emoji}</div></a>
+        <a href="product.html?p=${p.slug}">${thumb}</a>
         <div>
           <h4>${p.name}</h4>
           <div class="unit">${money(p.price)} each</div>
@@ -207,8 +209,7 @@ function renderCart() {
       </div>`;
     }).join("");
   }
-  const subtotal = entries.reduce((s, [slug, q]) => s + byId(slug).price * q, 0);
-  $(".subtotal-val").textContent = money(subtotal);
+  $(".subtotal-val").textContent = money(cartSubtotal());
   $$("[data-inc]").forEach((b) => (b.onclick = () => changeQty(b.dataset.inc, 1)));
   $$("[data-dec]").forEach((b) => (b.onclick = () => changeQty(b.dataset.dec, -1)));
   $$("[data-rm]").forEach((b) => (b.onclick = () => changeQty(b.dataset.rm, -999)));

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Solvly</title>
+  <meta name="description" content="Review your Solvly order. You approve everything by email before any payment happens." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section class="page-hero">
+    <div class="wrap center">
+      <h1>Almost there</h1>
+      <p>Review your order below. Nothing is charged today — you approve everything first.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="checkout-grid">
+      <!-- ORDER FORM -->
+      <div class="checkout-form">
+        <h3>Where should we send it?</h3>
+        <div class="pay-note">
+          <b>How payment works:</b> place your order now, pay nothing yet. We'll email you a
+          confirmation with a secure payment link. Your order ships as soon as you approve it —
+          and you can change your mind anytime before that at no cost.
+        </div>
+        <!-- Orders are delivered to the store inbox via FormSubmit (free service).
+             OWNER: the FIRST order ever submitted triggers a one-time activation email
+             to your inbox from formsubmit.co — click it once and all future orders flow in. -->
+        <form id="order-form" action="https://formsubmit.co/brianandbrightthebest@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="🛒 New Solvly order!" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="https://brianandbrightthebest-rgb.github.io/solvly/thanks.html" />
+          <input type="hidden" name="order_items" id="f-items" />
+          <input type="hidden" name="order_total" id="f-total" />
+
+          <div class="form-2col">
+            <div class="form-row">
+              <label for="f-name">Full name</label>
+              <input id="f-name" name="name" required placeholder="Jane Doe" autocomplete="name" />
+            </div>
+            <div class="form-row">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="f-addr">Street address</label>
+            <input id="f-addr" name="address" required placeholder="123 Main St, Apt 4" autocomplete="street-address" />
+          </div>
+          <div class="form-2col">
+            <div class="form-row">
+              <label for="f-city">City</label>
+              <input id="f-city" name="city" required placeholder="Columbus" autocomplete="address-level2" />
+            </div>
+            <div class="form-row">
+              <label for="f-state">State / ZIP</label>
+              <input id="f-state" name="state_zip" required placeholder="OH 43004" />
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="f-notes">Notes (optional)</label>
+            <textarea id="f-notes" name="notes" rows="3" placeholder="Anything we should know?"></textarea>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit" id="place-order">Place Order — Pay Nothing Today</button>
+          <div class="checkout-reassure">
+            <span>🔒 Your info is only used for this order</span>
+            <span>↩️ 30-day returns</span>
+            <span>💬 Real support</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="order-summary">
+        <h3>Your order</h3>
+        <div id="sum-items"></div>
+        <div class="ship-progress" id="ship-progress"></div>
+        <div class="sum-row"><span>Subtotal</span><span id="sum-subtotal">$0.00</span></div>
+        <div class="sum-row"><span>Shipping</span><span id="sum-shipping">—</span></div>
+        <div class="sum-row total"><span>Total</span><span id="sum-total">$0.00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const SHIP_FLAT = 4.99, FREE_AT = 50;
+      const entries = cartEntries();
+
+      if (!entries.length) {
+        $("#sum-items").innerHTML = `<p style="color:var(--ink-soft);font-size:14px;padding:8px 0 14px">
+          Your cart is empty — <a href="shop.html" style="color:var(--blue);font-weight:600">browse the solutions</a> and come back.</p>`;
+        $("#place-order").disabled = true;
+        $("#place-order").style.opacity = 0.5;
+        $("#ship-progress").hidden = true;
+        return;
+      }
+
+      const subtotal = cartSubtotal();
+      const shipping = subtotal >= FREE_AT ? 0 : SHIP_FLAT;
+
+      $("#sum-items").innerHTML = entries.map(([slug, q]) => {
+        const p = byId(slug);
+        return `<div class="sum-item">
+          ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<div style="font-size:26px">${p.emoji}</div>`}
+          <div><div class="n">${p.name}</div><div class="q">Qty ${q} · ${money(p.price)} each</div></div>
+          <div class="p">${money(p.price * q)}</div>
+        </div>`;
+      }).join("");
+
+      $("#sum-subtotal").textContent = money(subtotal);
+      $("#sum-shipping").textContent = shipping === 0 ? "FREE 🎉" : money(shipping);
+      $("#sum-total").textContent = money(subtotal + shipping);
+      $("#ship-progress").innerHTML = shipping === 0
+        ? `🚚 You unlocked <b>free shipping</b> — nice.`
+        : `🚚 Add <b>${money(FREE_AT - subtotal)}</b> more for free shipping.`;
+
+      // pack the order into the email
+      $("#order-form").addEventListener("submit", () => {
+        $("#f-items").value = entries.map(([slug, q]) => {
+          const p = byId(slug);
+          return `${q} × ${p.name} @ ${money(p.price)} = ${money(p.price * q)}`;
+        }).join(" | ");
+        $("#f-total").value = `${money(subtotal + shipping)} (subtotal ${money(subtotal)} + shipping ${shipping === 0 ? "FREE" : money(shipping)})`;
+      });
+    });
+  </script>
+</body>
+</html>
