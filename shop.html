@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Solutions — Solvly</title>
+  <meta name="description" content="Browse every Solvly problem-solving product: home organization, car essentials, travel, desk, kitchen, and daily life upgrades." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <h1 id="shop-title">Shop Solutions</h1>
+      <p id="shop-sub">Every product here earns its place by solving a real problem.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="shop-filters" id="shop-filters"></div>
+    <div class="prod-grid" id="shop-grid" style="padding: 20px 0 60px"></div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(location.search);
+      let cat = params.get("cat") || "all";
+      let f = params.get("f");
+
+      const FILTERS = [{ id: "all", icon: "🧩", name: "All Solutions" }, ...SOLVLY_CATEGORIES];
+      const filtersEl = $("#shop-filters");
+      filtersEl.innerHTML = FILTERS.map((c) =>
+        `<button class="finds-tab" data-cat="${c.id}">${c.icon} ${c.name}</button>`).join("");
+
+      const titleEl = $("#shop-title");
+      const subEl = $("#shop-sub");
+
+      function render() {
+        $$("#shop-filters .finds-tab").forEach((t) =>
+          t.classList.toggle("active", t.dataset.cat === cat));
+
+        let items = SOLVLY_PRODUCTS;
+        if (cat !== "all") items = items.filter((p) => p.category === cat);
+        if (f === "best") items = items.filter((p) => p.tags.includes("best"));
+        if (f === "under25") items = items.filter((p) => p.price < 25);
+        if (f === "new") items = [...items].reverse(); // newest additions listed first
+
+        const catInfo = SOLVLY_CATEGORIES.find((c) => c.id === cat);
+        titleEl.textContent =
+          f === "best" ? "Best Sellers" :
+          f === "new" ? "New Arrivals" :
+          f === "under25" ? "Under $25" :
+          catInfo ? `${catInfo.icon} ${catInfo.name}` : "Shop Solutions";
+        subEl.textContent = catInfo ? catInfo.blurb : "Every product here earns its place by solving a real problem.";
+
+        $("#shop-grid").innerHTML = items.length
+          ? items.map((p) => productCard(p)).join("")
+          : `<p style="grid-column:1/-1;color:var(--ink-soft)">No products in this view yet — check back soon.</p>`;
+        bindAddButtons();
+      }
+
+      filtersEl.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-cat]");
+        if (!btn) return;
+        cat = btn.dataset.cat;
+        f = null;
+        history.replaceState(null, "", cat === "all" ? "shop.html" : `shop.html?cat=${cat}`);
+        render();
+      });
+
+      render();
+    });
+  </script>
+</body>
+</html>

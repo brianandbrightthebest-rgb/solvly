@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solvly — Smart Solutions for Everyday Problems</title>
+  <meta name="description" content="Practical products that simplify your home, workspace, travel, and daily routine. Every product solves a real everyday problem." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Smart Solutions for <em>Everyday Problems</em></h1>
+        <p>Practical products that simplify your home, workspace, travel, and daily routine. No gimmicks — just things that work.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="shop.html?f=best">Shop Best Sellers</a>
+          <a class="btn btn-ghost" href="#solutions">Browse Solutions</a>
+        </div>
+        <div class="hero-trust">
+          <span>⭐ 4.8 average rating</span>
+          <span>🚚 Free shipping over $50</span>
+          <span>↩️ 30-day returns</span>
+        </div>
+      </div>
+      <div class="ps-visual" aria-hidden="true">
+        <div class="ps-card messy">
+          <div class="face">😩</div>
+          <div class="items">🔌🧦🔑📄☕</div>
+          <div class="label">The Problem</div>
+        </div>
+        <div class="ps-arrow">→</div>
+        <div class="ps-card solved">
+          <div class="face">😌</div>
+          <div class="items">✨🗂️✨</div>
+          <div class="label">Solved</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP BY SOLUTION -->
+  <section class="section" id="solutions">
+    <div class="wrap">
+      <span class="kicker">Shop by Solution</span>
+      <h2 class="section-title">What can we solve for you today?</h2>
+      <p class="section-sub">Six everyday battlegrounds. One fix for each.</p>
+      <div class="cat-grid" id="cat-grid"></div>
+    </div>
+  </section>
+
+  <!-- BEST SELLERS -->
+  <section class="section tinted">
+    <div class="wrap">
+      <span class="kicker">Best Sellers</span>
+      <h2 class="section-title">Problems people solve the most</h2>
+      <p class="section-sub">Our most-loved fixes, rated by the people who use them daily.</p>
+      <div class="prod-grid" id="best-grid"></div>
+    </div>
+  </section>
+
+  <!-- WHY SOLVLY -->
+  <section class="section">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Why Solvly</span>
+        <h2 class="section-title">Chosen carefully, so you don't have to</h2>
+        <p class="section-sub">We test hundreds of products and sell the few that genuinely earn a spot in your life.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="icon">⏱️</div>
+          <h3>Saves You Time</h3>
+          <p>Every product removes a small daily friction — the minutes add up to hours every week.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">🧠</div>
+          <h3>Smart Solutions</h3>
+          <p>Clever, purposeful design. No tools, no subscriptions, no 40-page manuals — unbox it and it works.</p>
+        </div>
+        <div class="why-card">
+          <div class="icon">🛡️</div>
+          <h3>Quality Tested</h3>
+          <p>We order, use, and stress-test everything ourselves before it earns the Solvly name.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRENDING SOLUTIONS -->
+  <section class="section tinted">
+    <div class="wrap">
+      <span class="kicker">🔥 Trending Solutions</span>
+      <h2 class="section-title">The internet's favorite fixes right now</h2>
+      <p class="section-sub">Viral problem-solvers people can't stop sharing.</p>
+      <div class="h-scroll" id="trending-row"></div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section class="section">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Proof, not promises</span>
+        <h2 class="section-title">Drag to see the difference</h2>
+        <p class="section-sub">The same desk, five minutes and one cable tray later.</p>
+      </div>
+      <div class="ba-wrap">
+        <div class="ba" id="ba-slider">
+          <div class="ba-pane ba-before">
+            <span class="ba-tag">Before</span>
+            <div class="scatter">🔌🖱️📄🎧</div>
+            <div class="scatter">☕🖊️📎🔋💾</div>
+          </div>
+          <div class="ba-pane ba-after">
+            <span class="ba-tag">After</span>
+            <div class="neat">💻 ✨</div>
+            <p class="ba-caption">Everything in its place.</p>
+          </div>
+          <div class="ba-handle"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLVLY FINDS -->
+  <section class="section tinted">
+    <div class="wrap">
+      <span class="kicker">Solvly Finds</span>
+      <h2 class="section-title">Curated for how you live</h2>
+      <div class="finds-tabs" id="finds-tabs"></div>
+      <div class="h-scroll" id="finds-row"></div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Customer Stories</span>
+        <h2 class="section-title">Real problems, actually solved</h2>
+        <p class="section-sub">Stories from people whose daily annoyances are now gone.</p>
+      </div>
+      <div class="review-grid" id="review-grid"></div>
+    </div>
+  </section>
+
+  <!-- FEATURED COLLECTION -->
+  <section class="section">
+    <div class="wrap">
+      <div class="collection-banner">
+        <div>
+          <span class="kicker" style="color:#8fb0ff">Featured Collection · July</span>
+          <h2>Summer Travel, Simplified</h2>
+          <p>Compression cubes, universal chargers, and everything else that makes the trip about the destination — not the luggage.</p>
+          <a class="btn btn-primary" href="shop.html?cat=travel">Shop Travel Essentials →</a>
+        </div>
+        <div class="big-emoji">🏝️🧳</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // categories
+      $("#cat-grid").innerHTML = SOLVLY_CATEGORIES.map((c) => `
+        <a class="cat-card" href="shop.html?cat=${c.id}">
+          <div class="icon">${c.icon}</div>
+          <h3>${c.name}</h3>
+          <p>${c.blurb}</p>
+        </a>`).join("");
+
+      // best sellers (top 4 by tag)
+      const best = SOLVLY_PRODUCTS.filter((p) => p.tags.includes("best")).slice(0, 4);
+      $("#best-grid").innerHTML = best.map((p) => productCard(p)).join("");
+
+      // trending row
+      const trending = SOLVLY_PRODUCTS.filter((p) => p.tags.includes("trending"));
+      $("#trending-row").innerHTML = trending.map((p) => productCard(p, { badge: "🔥 Trending" })).join("");
+
+      // finds tabs
+      const FINDS = [
+        { id: "trending", label: "Trending Now" },
+        { id: "staff", label: "Staff Picks" },
+        { id: "under25", label: "Under $25" },
+        { id: "travel", label: "Travel Essentials" },
+        { id: "deskup", label: "Desk Upgrades" },
+        { id: "homeup", label: "Home Upgrades" },
+      ];
+      const tabsEl = $("#finds-tabs");
+      tabsEl.innerHTML = FINDS.map((f, i) =>
+        `<button class="finds-tab ${i === 0 ? "active" : ""}" data-find="${f.id}">${f.label}</button>`).join("");
+      const showFinds = (id) => {
+        const items = SOLVLY_PRODUCTS.filter((p) => p.tags.includes(id));
+        $("#finds-row").innerHTML = items.map((p) => productCard(p)).join("");
+        bindAddButtons($("#finds-row"));
+      };
+      tabsEl.addEventListener("click", (e) => {
+        const btn = e.target.closest(".finds-tab");
+        if (!btn) return;
+        $$(".finds-tab").forEach((t) => t.classList.remove("active"));
+        btn.classList.add("active");
+        showFinds(btn.dataset.find);
+      });
+      showFinds("trending");
+
+      // reviews
+      $("#review-grid").innerHTML = SOLVLY_REVIEWS.map((r, i) => {
+        const p = byId(r.product);
+        return `
+        <div class="review-card ${i === 0 ? "pinned" : ""}">
+          <div class="review-stars">${"★".repeat(r.stars)}${"☆".repeat(5 - r.stars)}</div>
+          <p class="review-text">"${r.text}"</p>
+          <div class="review-meta">
+            <span class="avatar">${r.name[0]}</span>
+            <span><b>${r.name}</b> · ${p.name}<br><span class="verified">✓ Verified Purchase</span></span>
+          </div>
+        </div>`;
+      }).join("");
+
+      bindAddButtons();
+      initBASlider("#ba-slider");
+    });
+  </script>
+</body>
+</html>

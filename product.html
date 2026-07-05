@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product — Solvly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body class="has-sticky">
+  <div id="site-header"></div>
+
+  <div class="wrap">
+    <div class="pdp-grid" id="pdp"></div>
+  </div>
+
+  <!-- BEFORE / AFTER -->
+  <section class="section tinted">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Proof, not promises</span>
+        <h2 class="section-title">Drag to see the difference</h2>
+      </div>
+      <div class="ba-wrap">
+        <div class="ba" id="ba-slider">
+          <div class="ba-pane ba-before">
+            <span class="ba-tag">Before</span>
+            <div class="scatter" id="ba-mess">😩</div>
+            <p class="ba-caption">The daily frustration.</p>
+          </div>
+          <div class="ba-pane ba-after">
+            <span class="ba-tag">After</span>
+            <div class="neat" id="ba-neat">✨</div>
+            <p class="ba-caption">Problem solved.</p>
+          </div>
+          <div class="ba-handle"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Customer Stories</span>
+        <h2 class="section-title">What owners say</h2>
+      </div>
+      <div class="review-grid" id="review-grid"></div>
+    </div>
+  </section>
+
+  <!-- COMPLETE YOUR SETUP -->
+  <section class="section tinted">
+    <div class="wrap">
+      <span class="kicker">Complete Your Setup</span>
+      <h2 class="section-title">Pairs well with</h2>
+      <div class="prod-grid" id="related-grid"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="center">
+        <span class="kicker">Questions</span>
+        <h2 class="section-title">Frequently asked</h2>
+      </div>
+      <div class="faq" id="faq"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <!-- sticky mobile add-to-cart -->
+  <div class="sticky-atc on" id="sticky-atc"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slug = new URLSearchParams(location.search).get("p");
+      const p = byId(slug) || SOLVLY_PRODUCTS[0];
+      const save = Math.round((1 - p.price / p.compareAt) * 100);
+      document.title = `${p.headline} — Solvly`;
+
+      $("#pdp").innerHTML = `
+        <div class="pdp-gallery">
+          <div class="pdp-art" id="pdp-art">${p.emoji}</div>
+          <div class="pdp-thumbs">
+            <div class="t active">${p.emoji}</div>
+            <div class="t">📦</div>
+            <div class="t">✨</div>
+          </div>
+        </div>
+        <div class="pdp-info">
+          <span class="kicker">${SOLVLY_CATEGORIES.find((c) => c.id === p.category).name}</span>
+          <h1>${p.headline}</h1>
+          <div class="pdp-name">${p.name}</div>
+          <div class="pdp-rating"><span class="stars">${stars(p.rating)}</span> ${p.rating} · ${p.reviews} reviews</div>
+          <div class="pdp-price-row">
+            <span class="pdp-price">${money(p.price)}</span>
+            <span class="pdp-compare">${money(p.compareAt)}</span>
+            <span class="pdp-save">Save ${save}%</span>
+          </div>
+          <button class="btn btn-primary btn-block" data-add="${p.slug}">Add to Cart — ${money(p.price)}</button>
+          <div class="trust-row">
+            <span>🚚 Free shipping over $50</span><span>↩️ 30-day returns</span><span>🛡️ 12-month warranty</span>
+          </div>
+          <div class="pdp-block">
+            <h3>The Problem</h3>
+            <p>${p.problem}</p>
+          </div>
+          <div class="pdp-block">
+            <h3>The Solution</h3>
+            <p>${p.solution}</p>
+          </div>
+          <div class="pdp-block">
+            <h3>Benefits</h3>
+            <ul class="benefit-list">${p.benefits.map((b) => `<li>${b}</li>`).join("")}</ul>
+          </div>
+        </div>`;
+
+      // thumbs swap the main art (placeholder tiles until real photos are added)
+      $$(".pdp-thumbs .t").forEach((t) => t.addEventListener("click", () => {
+        $$(".pdp-thumbs .t").forEach((x) => x.classList.remove("active"));
+        t.classList.add("active");
+        $("#pdp-art").textContent = t.textContent;
+      }));
+
+      // before/after tailored to product
+      $("#ba-mess").textContent = "😩" + p.emoji + "❓";
+      $("#ba-neat").textContent = p.emoji + " ✨";
+      initBASlider("#ba-slider");
+
+      // reviews for this product first, then others
+      const revs = [...SOLVLY_REVIEWS].sort((a, b) =>
+        (b.product === p.slug) - (a.product === p.slug)).slice(0, 2);
+      $("#review-grid").innerHTML = revs.map((r, i) => {
+        const rp = byId(r.product);
+        return `
+        <div class="review-card ${r.product === p.slug && i === 0 ? "pinned" : ""}">
+          <div class="review-stars">${"★".repeat(r.stars)}${"☆".repeat(5 - r.stars)}</div>
+          <p class="review-text">"${r.text}"</p>
+          <div class="review-meta">
+            <span class="avatar">${r.name[0]}</span>
+            <span><b>${r.name}</b> · ${rp.name}<br><span class="verified">✓ Verified Purchase</span></span>
+          </div>
+        </div>`;
+      }).join("");
+
+      // related: same category first, then top sellers, excluding self
+      const related = SOLVLY_PRODUCTS
+        .filter((x) => x.slug !== p.slug)
+        .sort((a, b) => (b.category === p.category) - (a.category === p.category))
+        .slice(0, 4);
+      $("#related-grid").innerHTML = related.map((x) => productCard(x)).join("");
+
+      // FAQ
+      $("#faq").innerHTML = SOLVLY_FAQ.map((f) =>
+        `<details><summary>${f.q}</summary><p>${f.a}</p></details>`).join("");
+
+      // sticky mobile bar
+      $("#sticky-atc").innerHTML = `
+        <span class="s-price">${money(p.price)}</span>
+        <button class="btn btn-primary" data-add="${p.slug}">Add to Cart</button>`;
+
+      bindAddButtons();
+    });
+  </script>
+</body>
+</html>

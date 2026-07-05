@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Solvly</title>
+  <meta name="description" content="Questions about an order, shipping, or a product? The Solvly team replies within one business day." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💡</text></svg>" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section class="page-hero">
+    <div class="wrap center">
+      <h1>Contact Us</h1>
+      <p>Questions about a product, an order, or shipping? We reply within one business day.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="contact-card">
+        <!-- OWNER: this form opens the visitor's email app addressed to the store email.
+             For a real inbox form later, create a free Formspree form and set
+             action="https://formspree.io/f/YOUR_ID" method="POST" on the <form>. -->
+        <form id="contact-form">
+          <div class="form-row">
+            <label for="cname">Your name</label>
+            <input id="cname" name="name" required placeholder="Jane Doe" />
+          </div>
+          <div class="form-row">
+            <label for="cemail">Your email</label>
+            <input id="cemail" name="email" type="email" required placeholder="you@example.com" />
+          </div>
+          <div class="form-row">
+            <label for="cmsg">How can we help?</label>
+            <textarea id="cmsg" name="message" rows="5" required placeholder="Tell us about the problem you're trying to solve…"></textarea>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Send Message</button>
+          <p style="font-size:12.5px;color:var(--ink-soft);text-align:center;margin-top:12px">
+            Or email us directly: <a href="mailto:brianandbrightthebest@gmail.com" style="color:var(--blue);font-weight:600">brianandbrightthebest@gmail.com</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $("#contact-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = $("#cname").value, email = $("#cemail").value, msg = $("#cmsg").value;
+      const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+      location.href = `mailto:brianandbrightthebest@gmail.com?subject=${encodeURIComponent("Solvly inquiry from " + name)}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
